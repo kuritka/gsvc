@@ -1,9 +1,9 @@
 package cmd
 
-
 import (
-	"github.com/kuritka/gext/env"
 	"github.com/kuritka/gsvc/depresolver"
+	"github.com/kuritka/gsvc/services/httpsproxy"
+	"github.com/kuritka/gsvc/svcrunner"
 	"github.com/spf13/cobra"
 )
 
@@ -14,9 +14,10 @@ var httpsproxyCmd = &cobra.Command{
 
 	Run: func(cmd *cobra.Command, args []string) {
 
-		settings := depresolver.New().MustResolveHttpsProxy()
+		proxySettings := depresolver.New().MustResolveHttpsProxy()
+		proxy := httpsproxy.New(proxySettings, ctx)
+		svcrunner.New(proxy).MustRun()
 
-		settings.
 	},
 }
 

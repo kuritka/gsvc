@@ -2,6 +2,7 @@
 package cmd
 
 import (
+	"context"
 	"os"
 
 	"github.com/kuritka/gext/log"
@@ -11,6 +12,8 @@ import (
 var logger = log.Log
 
 var Verbose bool
+
+var ctx = context.Background()
 
 var rootCmd = &cobra.Command{
 	Short: "gsvc depresolver tools",
