@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/kuritka/gsvc/depresolver"
+	"github.com/kuritka/gsvc/common/depresolver"
 	"github.com/kuritka/gsvc/services/httpsproxy"
 	"github.com/kuritka/gsvc/svcrunner"
 	"github.com/spf13/cobra"

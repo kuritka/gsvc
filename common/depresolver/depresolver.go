@@ -3,7 +3,9 @@ package depresolver
 
 import (
 	"github.com/kuritka/gext/env"
+	"github.com/kuritka/gext/guard"
 	"github.com/kuritka/gsvc/services/httpsproxy"
+	"net/url"
 	"sync"
 )
 
@@ -20,9 +22,13 @@ func New() *DepResolver {
 }
 
 func (dr *DepResolver) MustResolveHttpsProxy() httpsproxy.Settings {
+	var err error
 	dr.httpsproxy.initOnce.Do(func() {
-		env.MustGetStringFlagFromEnv("HTTPS_PROXY_PORT")
-		env.MustGetStringFlagFromEnv("HTTPS_PROXY_DEFAULT_HOST")
+		dr.httpsproxy.settings.Port = env.MustGetStringFlagFromEnv("HTTPS_PROXY_PORT")
+		dr.httpsproxy.settings.DefaultHost, err =  url.Parse(env.MustGetStringFlagFromEnv("HTTPS_PROXY_DEFAULT_HOST"))
+		guard.FailOnError(err, "parsing HTTPS_PROXY_DEFAULT_HOST")
+		dr.httpsproxy.settings.CertPath = env.MustGetStringFlagFromEnv("HTTPS_PROXY_CERT_PATH")
+		dr.httpsproxy.settings.KeyPath = env.MustGetStringFlagFromEnv("HTTPS_PROXY_KEY_PATH")
 	})
 	return dr.httpsproxy.settings
 }
